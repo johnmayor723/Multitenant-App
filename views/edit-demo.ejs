@@ -1,0 +1,310 @@
+<!-- Edit Product Page -->
+<div class="container mt-5">
+  <h3 class="mb-3">Edit Product</h3>
+
+  <% if (success_msg) { %>
+    <div class="alert alert-success"><%= success_msg %></div>
+  <% } %>
+  <% if (error_msg) { %>
+    <div class="alert alert-danger"><%= error_msg %></div>
+  <% } %>
+
+  <form action="/management/products/edit/<%= product._id %>" method="POST" enctype="multipart/form-data">
+    <div class="mb-3">
+      <label class="form-label">Product Name</label>
+      <input type="text" name="name" class="form-control" value="<%= product.name %>" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Description</label>
+      <textarea name="description" class="form-control" required><%= product.description %></textarea>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Product Images</label><br>
+      <% if (product.images && product.images.length > 0) { %>
+        <% product.images.forEach((image, index) => { %>
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" name="keptImages[]" value="<%= image %>" checked>
+            <label class="form-check-label"><img src="<%= image %>" alt="Image <%= index+1 %>" height="80"></label>
+          </div>
+        <% }); %>
+      <% } %>
+      <input type="file" name="images" multiple class="form-control mt-2">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Price (£)</label>
+      <input type="number" name="price" class="form-control" value="<%= product.price %>" required>
+    </div>
+    <!-- Category Selection Buttons -->
+<div class="mb-3">
+  <label class="form-label">Select A Category:</label>
+  <div id="categoryButtons" class="d-flex gap-2 flex-wrap">
+    <% 
+      const categories = [
+        'Bags', 'Jackets', 'Shirts', 'Suits', 'Dresses',
+        'Skirts', 'Sets', 'Kimono', 'Sweatshirts', 'Hoodies',
+        'Glasses', 'Beach Hats', 'Gym', 'Sales', 'Clearance Sales'
+      ];
+      const currentCategory = product?.category || '';
+    %>
+    <% categories.forEach(cat => { %>
+      <button
+        type="button"
+        class="btn <%= currentCategory === cat ? 'btn-primary' : 'btn-outline-primary' %>"
+        data-category="<%= cat %>">
+        <%= cat %>
+      </button>
+    <% }) %>
+  </div>
+</div>
+
+<!-- Hidden input for category -->
+<input type="hidden" name="category" id="hiddenCategory" value="<%= currentCategory %>">
+
+<!-- Subcategory dropdown rendered dynamically -->
+<div id="subcategorySelectContainer" class="mb-3"></div>
+
+<!-- Hidden input with existing subcategory (for JS preselection) -->
+<input type="hidden" id="existingSubcategory" value="<%= product?.subcategory || '' %>">
+
+    <div id="buying-options">
+      <label class="form-label">Buying Options</label>
+      <% if (product.buyingOptions && product.buyingOptions.length > 0) { %>
+        <% product.buyingOptions.forEach((option, index) => { %>
+          <div class="card p-3 mb-3 buying-option">
+            <input type="hidden" name="existingOptionIndexes[]" value="<%= index %>">
+
+            <div class="mb-2">
+              <label>Option Name</label>
+              <input type="text" name="optionNames[]" value="<%= option.name %>" class="form-control" required>
+            </div>
+
+            <div class="mb-2">
+              <label>Colors</label><br>
+              <% ['Red','Blue','Black','White','Green'].forEach(color => { %>
+                <label><input type="checkbox" name="optionColors[<%= index %>][]" value="<%= color %>" <%= option.colors && option.colors.includes(color) ? 'checked' : '' %>> <%= color %></label>
+              <% }); %>
+            </div>
+
+            <div class="mb-2">
+              <label>Sizes</label><br>
+              <% ['S','M','L','XL'].forEach(size => { %>
+                <label><input type="checkbox" name="optionSizes[<%= index %>][]" value="<%= size %>" <%= option.sizes && option.sizes.includes(size) ? 'checked' : '' %>> <%= size %></label>
+              <% }); %>
+            </div>
+
+            <div class="mb-2">
+              <label>Current Option Image</label><br>
+              <% if (option.image) { %>
+                <input type="hidden" name="keptBuyingOptionImages[]" value="<%= option.image %>">
+                <img src="<%= option.image %>" height="80">
+              <% } %>
+              <input type="file" name="buyingOptionImages" class="form-control option-image-input mt-2">
+              <img class="img-preview mt-2" style="display:none;" height="80">
+            </div>
+
+            <button type="button" class="btn btn-danger btn-sm remove-buying-option">Remove</button>
+          </div>
+        <% }); %>
+      <% } %>
+    </div>
+
+    <button type="button" class="btn btn-secondary mb-3" id="add-buying-option">+ Add More Buying Options</button>
+
+   
+    <button type="submit" class="btn btn-primary mb-4">Update Product</button>
+  </form>
+
+  <!-- Buying Option Template -->
+  <template id="buying-option-template">
+    <div class="card p-3 mb-3 buying-option">
+      <div class="mb-2">
+        <label>Option Name</label>
+        <input type="text" class="form-control option-name" required>
+      </div>
+
+      <div class="mb-2">
+        <label>Colors</label><br>
+        <label><input type="checkbox" class="option-color" value="Red"> Red</label>
+        <label><input type="checkbox" class="option-color" value="Blue"> Blue</label>
+        <label><input type="checkbox" class="option-color" value="Black"> Black</label>
+      </div>
+
+      <div class="mb-2">
+        <label>Sizes</label><br>
+        <label><input type="checkbox" class="option-size" value="S"> S</label>
+        <label><input type="checkbox" class="option-size" value="M"> M</label>
+        <label><input type="checkbox" class="option-size" value="L"> L</label>
+      </div>
+
+      <div class="mb-2">
+        <label>Option Image</label>
+        <input type="file" class="form-control option-image-input">
+        <img class="img-preview mt-2" style="display:none;" height="80">
+      </div>
+
+      <button type="button" class="btn btn-danger btn-sm remove-buying-option">Remove</button>
+    </div>
+  </template>
+</div>
+
+<!-- Scripts -->
+<script>
+  let optionIndex = document.querySelectorAll('.buying-option').length;
+
+  function enableImagePreviews() {
+    document.querySelectorAll('.option-image-input').forEach(input => {
+      input.removeEventListener('change', handleImageChange); // Avoid double-binding
+      input.addEventListener('change', handleImageChange);
+    });
+  }
+
+  function handleImageChange(e) {
+    const preview = this.parentElement.querySelector('.img-preview');
+    if (this.files && this.files[0]) {
+      preview.src = URL.createObjectURL(this.files[0]);
+      preview.style.display = 'block';
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    enableImagePreviews();
+
+    document.getElementById('add-buying-option').addEventListener('click', () => {
+      const template = document.getElementById('buying-option-template');
+      const clone = document.importNode(template.content, true);
+
+      // Set dynamic names for form fields
+      const nameInput = clone.querySelector('.option-name');
+      if (nameInput) nameInput.name = `optionNames[${optionIndex}]`;
+
+      clone.querySelectorAll('.option-color').forEach(cb => {
+        cb.name = `optionColors[${optionIndex}][]`;
+      });
+
+      clone.querySelectorAll('.option-size').forEach(cb => {
+        cb.name = `optionSizes[${optionIndex}][]`;
+      });
+
+      const fileInput = clone.querySelector('.option-image-input');
+      if (fileInput) fileInput.name = 'buyingOptionImages';
+
+      document.getElementById('buying-options').appendChild(clone);
+      optionIndex++;
+
+      enableImagePreviews(); // Bind preview to the new input
+    });
+
+    document.addEventListener('click', function (e) {
+      if (e.target.classList.contains('remove-buying-option')) {
+        e.target.closest('.buying-option').remove();
+      }
+    });
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const categoryMap = {
+      Bags: [
+        { value: "crossbody-bag", label: "Crossbody Bag" },
+        { value: "shoulder-bag", label: "Shoulder Bag" },
+        { value: "clutch", label: "Clutch" },
+        { value: "backpack", label: "Backpack" },
+        { value: "duffel-bag", label: "Duffel Bag" },
+        { value: "travel-set", label: "Travel Set" }
+      ],
+      Jackets: [
+        { value: "blazer", label: "Blazer" },
+        { value: "denim-jacket", label: "Denim Jacket" },
+        { value: "winter-jacket", label: "Winter Jacket" },
+        { value: "bomber-jacket", label: "Bomber Jacket" }
+      ],
+      Shirts: [
+        { value: "t-shirt", label: "T-shirt" },
+        { value: "long-sleeve-shirts", label: "Long Sleeve Shirts" },
+        { value: "short-sleeve-shirts", label: "Short Sleeve Shirts" }
+      ],
+      Suits: [
+        { value: "trouser-suit", label: "Trouser Suit" },
+        { value: "skirt-suit", label: "Skirt Suit" }
+      ],
+      Dresses: [],
+      Skirts: [],
+      Sets: [
+        { value: "travel-set", label: "Travel Set" },
+        { value: "beach-set", label: "Beach Set" },
+        { value: "short-top-set", label: "Short and Top Set" },
+        { value: "kimono-set", label: "Kimono Set" }
+      ],
+      Kimono: [],
+      Sweatshirts: [],
+      Hoodies: [],
+      Glasses: [],
+      "Beach Hats": [],
+      Gym: [
+        { value: "active-wears", label: "Active Wears" },
+        { value: "yoga-mats", label: "Yoga Mats" }
+      ],
+      Sales: [],
+      "Clearance Sales": []
+    };
+
+    const buttons = document.querySelectorAll('#categoryButtons button');
+    const subcategoryContainer = document.getElementById('subcategorySelectContainer');
+    const hiddenCategoryInput = document.getElementById('hiddenCategory');
+    const existingCategory = hiddenCategoryInput.value;
+    const existingSubcategory = document.getElementById('existingSubcategory')?.value || '';
+
+    function renderSubcategories(category, preselect = '') {
+      const subcategories = categoryMap[category] || [];
+      subcategoryContainer.innerHTML = '';
+
+      if (subcategories.length > 0) {
+        const select = document.createElement('select');
+        select.name = 'subcategory';
+        select.className = 'form-select';
+        select.required = true;
+
+        const defaultOption = document.createElement('option');
+        defaultOption.value = '';
+        defaultOption.textContent = 'Select Sub Category';
+        select.appendChild(defaultOption);
+
+        subcategories.forEach(sub => {
+          const option = document.createElement('option');
+          option.value = sub.value;
+          option.textContent = sub.label;
+          if (sub.value === preselect) option.selected = true;
+          select.appendChild(option);
+        });
+
+        const label = document.createElement('label');
+        label.className = 'form-label';
+        label.textContent = 'Subcategory:';
+        subcategoryContainer.appendChild(label);
+        subcategoryContainer.appendChild(select);
+      }
+    }
+
+    // Button click listeners
+    buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        const selectedCategory = button.getAttribute('data-category');
+        hiddenCategoryInput.value = selectedCategory;
+
+        renderSubcategories(selectedCategory, '');
+
+        // Update button styles
+        buttons.forEach(b => b.classList.replace('btn-primary', 'btn-outline-primary'));
+        button.classList.replace('btn-outline-primary', 'btn-primary');
+      });
+    });
+
+    // Initial render if editing an existing product
+    if (existingCategory) {
+      renderSubcategories(existingCategory, existingSubcategory);
+    }
+  });
+</script>

@@ -1,0 +1,393 @@
+<style>
+  .subcategory-badge {
+#subcategoryContainer a.subcategory-badge {
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  background-color: #f8f9fa;
+  color: #212529;
+  text-decoration: none;
+  border: 1px solid #ced4da;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+#subcategoryContainer a.subcategory-badge:hover {
+  background-color: #0d6efd;
+  color: #fff;
+  border-color: #0d6efd;
+}
+</style>
+
+<!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+
+    <!-- Display success message -->
+    <% if (success_msg.length > 0) { %>
+        <div class="alert alert-success">
+            <%= success_msg %>
+        </div>
+    <% } %>
+
+    <!-- Display error message -->
+    <% if (error_msg.length > 0) { %>
+        <div class="alert alert-danger">
+            <%= error_msg %>
+        </div>
+    <% } %>
+    <!-- Hero Section Begin -->
+    <section class="hero">
+        <div class="hero__slider owl-carousel">
+            <div class="hero__items set-bg" data-setbg="/img/mo.jpg">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-5 col-lg-7 col-md-8">
+                            <div class="hero__text">
+                                <h6>Where Heritage Meets High Fashion</h6>
+                                <h2>Bold & Cultural</h2>
+                                <h5 style="font-weight:bolder;color:#722f37">Timeless Afrocentric designs, crafted for those who wear culture with confidence.</h5>
+                                <a href="#" class="primary-btn">Shop now <span class="arrow_right"></span></a>
+                                <div class="hero__social">
+                                    <a href="#"><i class="fa fa-facebook"></i></a>
+                                    <a href="#"><i class="fa fa-twitter"></i></a>
+                                    <a href="#"><i class="fa fa-pinterest"></i></a>
+                                    <a href="#"><i class="fa fa-instagram"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero__items set-bg" data-setbg="/img/mf.jpg">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-5 col-lg-7 col-md-8">
+                            <div class="hero__text">
+                                <h6>Artistic & Timeless</h6>
+                                <h2>Beyond Fashion, Into Expression</h2>
+                                <h4 style="font-weight:bolder;color:white">Style rooted in culture, elevated by craftsmanship.</h4>
+                                <a href="#" class="primary-btn">Shop now <span class="arrow_right"></span></a>
+                                <div class="hero__social">
+                                    <a href="#"><i class="fa fa-facebook"></i></a>
+                                    <a href="#"><i class="fa fa-twitter"></i></a>
+                                    <a href="#"><i class="fa fa-pinterest"></i></a>
+                                    <a href="#"><i class="fa fa-instagram"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Hero Section End -->
+    
+
+
+
+    <!-- Banner Section Begin -->
+    <section class="banner spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-7 offset-lg-4">
+                    <div class="banner__item">
+                        <div class="banner__item__pic">
+                            <img style="width:400px" src="/img/clothing.jpeg" alt="">
+                        </div>
+                        <div class="banner__item__text">
+                            <h2>Clothing Collections 2025</h2>
+                            <a href="/clothings">Shop now</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="banner__item banner__item--middle">
+                        <div class="banner__item__pic">
+                            <img style="width:400px" src="/img/glasses.jpeg" alt="">
+                        </div>
+                        <div class="banner__item__text">
+                            <h2>Accessories</h2>
+                            <a href="/accessories">Shop now</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-7">
+                    <div class="banner__item banner__item--last">
+                        <div class="banner__item__pic">
+                            <img style="width:400px" src="/img/bags.jpeg" alt="">
+                        </div>
+                        <div class="banner__item__text">
+                            <h2>Bags Spring 2030</h2>
+                            <a href="/bags">Shop now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Banner Section End -->
+<!-- Product Section Begin -->
+<section class="product spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <ul class="filter__controls">
+                    <li class="active" data-filter="*">Best Sellers</li>
+                    <li data-filter=".new-arrivals">New Arrivals</li>
+                    <li data-filter=".hot-sales">Hot Sales</li>
+                </ul>
+            </div>
+        </div>
+        <div class="row product__filter">
+            <% products.forEach(function(product) { %>
+                <div class="col-lg-3 col-md-6 col-sm-6 mix <%= product.category ? product.category : 'new-arrivals' %>">
+                    <div class="product__item">
+                        <!-- Use product.image[0] as the main image URL -->
+                        <div class="product__item__pic set-bg" data-setbg="<%= product.images && product.images.length ? product.images[0] : 'img/default.jpg' %>">
+                            <% if(product.label) { %>
+                                <span class="label"><%= product.label %></span>
+                            <% } %>
+                            <ul class="product__hover">
+                                <li><a href="#"><img src="img/icon/heart.png" alt="Heart"></a></li>
+                                <li><a href="#"><img src="img/icon/compare.png" alt="Compare"> <span>Compare</span></a></li>
+                                <li><a href="#"><img src="img/icon/search.png" alt="Search"></a></li>
+                            </ul>
+                        </div>
+                        <div class="product__item__text">
+                            <h6><%= product.name %></h6>
+                            <a href="/products/<%= product._id %>" class="add-cart">+ Add To Cart</a>
+                            <div class="rating">
+                                <% for(var i = 0; i < 5; i++) { %>
+                                    <i class="fa <%= i < (product.rating || 0) ? 'fa-star' : 'fa-star-o' %>"></i>
+                                <% } %>
+                            </div>
+                            <h5>£<%= product.price %></h5>
+                           
+
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    </div>
+</section>
+<!-- Product Section End -->
+
+    <!-- Categories Section Begin -->
+    <section class="categories spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="categories__text">
+                        <h2>Clothings Hot <br /> <span>Shoe Collection</span> <br /> Accessories</h2>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="categories__hot__deal">
+                        <img src="<%=dealOfTheDay.images[0]%>" alt="">
+                        <div class="hot__deal__sticker">
+                            <span>Sale Of</span>
+                            <h5>£<%=dealOfTheDay.price%></h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 offset-lg-1">
+                    <div class="categories__deal__countdown">
+                        <span>Deal Of The Week</span>
+                        <h2><%=dealOfTheDay.name%></h2>
+                        <div class="categories__deal__countdown__timer" id="countdown">
+                            <div class="cd-item">
+                                <span>3</span>
+                                <p>Days</p>
+                            </div>
+                            <div class="cd-item">
+                                <span>1</span>
+                                <p>Hours</p>
+                            </div>
+                            <div class="cd-item">
+                                <span>50</span>
+                                <p>Minutes</p>
+                            </div>
+                            <div class="cd-item">
+                                <span>18</span>
+                                <p>Seconds</p>
+                            </div>
+                        </div>
+                       
+    <a class="primary-btn" href="/products/<%=dealOfTheDay._id%>">Add to Cart</button>
+</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Categories Section End -->
+
+    <!-- Instagram Section Begin -->
+    <section class="instagram spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="instagram__pic">
+                        <div class="instagram__pic__item set-bg" data-setbg="/img/ig1.jpg"></div>
+                        <div class="instagram__pic__item set-bg" data-setbg="/img/ig2.jpg"></div>
+                        <div class="instagram__pic__item set-bg" data-setbg="/img/ig3.jpg"></div>
+                        <div class="instagram__pic__item set-bg" data-setbg="/img/ig4.jpg"></div>
+                        <div class="instagram__pic__item set-bg" data-setbg="img/ig5.jpg"></div>
+                        <div class="instagram__pic__item set-bg" data-setbg="img/ig6.jpg"></div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                  <div class="instagram__text">
+    <h2>Instagram</h2>
+    <p>Stay updated with the latest Afrocentric fashion trends, styling tips, and exclusive collections by following us on Instagram.</p>
+    <h5><a href="https://www.instagram.com/mfbyforsythebrand" target="_blank">@MFBYFORESYTHEBRAND</a></h5>
+</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Instagram Section End -->
+
+    <!-- Latest Blog Section Begin -->
+    <section class="latest spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-title">
+                        <span>Latest News</span>
+                        <h2>Fashion New Trends</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+<% blogs.forEach(blog => { %>
+    <div class="col-lg-4 col-md-6 col-sm-6">
+        <div class="blog__item">
+            <div class="blog__item__pic set-bg" style="margin-top: 20px; margin-bottom: 20px;">
+                <img src="<%= blog.image %>" alt="Blog Image">
+            </div>
+            <div class="blog__item__text">
+                <span><img src="img/icon/calendar.png" alt="">Post created on: <%= blog.createdAt %></span>
+                <h5><%= blog.title %></h5>
+                <a href="/blogs/<%= blog._id %>">Read More</a>
+            </div>
+        </div>
+    </div>
+<% }) %>
+            </div>
+        </div>
+    </section>
+    <!-- Latest Blog Section End -->
+
+
+
+<script>
+  const categoryMap = {
+    Bags: [
+      { value: "crossbody-bag", label: "Crossbody Bag" },
+      { value: "shoulder-bag", label: "Shoulder Bag" },
+      { value: "clutch", label: "Clutch" },
+      { value: "backpack", label: "Backpack" },
+      { value: "duffel-bag", label: "Duffel Bag" },
+      { value: "travel-set", label: "Travel Set" }
+    ],
+    Jackets: [
+      { value: "blazer", label: "Blazer" },
+      { value: "denim-jacket", label: "Denim Jacket" },
+      { value: "winter-jacket", label: "Winter Jacket" },
+      { value: "bomber-jacket", label: "Bomber Jacket" }
+    ],
+    Dresses: [],
+    Suits: [
+      { value: "trouser-suit", label: "Trouser Suit" },
+      { value: "skirt-suit", label: "Skirt Suit" }
+    ],
+    Gym: [
+      { value: "active-wears", label: "Active Wears" },
+      { value: "yoga-mats", label: "Yoga Mats" }
+    ],
+    Sets: [
+      { value: "travel-set", label: "Travel Set" },
+      { value: "beach-set", label: "Beach Set" },
+      { value: "short-and-top-set", label: "Short and Top Set" },
+      { value: "kimono-set", label: "Kimono Set" }
+    ],
+    Shirts: [
+      { value: "t-shirt", label: "T-shirt" },
+      { value: "long-sleeve-shirts", label: "Long Sleeve Shirts" },
+      { value: "short-sleeve-shirts", label: "Short Sleeve Shirts" }
+    ],
+    Skirts: [],
+    Kimono: [],
+    Sweatshirts: [],
+    Hoodies: [],
+    Glasses: [],
+    "Beach hats": [],
+    Sales: [],
+    "Clearance sales": []
+  };
+
+  function renderCategoryModal() {
+    const container = document.getElementById('modalCategoryContent');
+    container.innerHTML = '';
+
+    Object.entries(categoryMap).forEach(([category, subcategories]) => {
+      const col = document.createElement('div');
+      col.className = 'col';
+
+      const heading = document.createElement('h6');
+      heading.textContent = category;
+      heading.className = 'fw-bold text-black';
+
+      const list = document.createElement('ul');
+      list.className = 'list-unstyled';
+
+      if (subcategories.length === 0) {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = `/products/${category}/`;
+        a.textContent = category;
+        a.className = 'fw-bold';
+        a.style.color = '#9b2c9b'; // reddish-purple
+        li.appendChild(a);
+        list.appendChild(li);
+      } else {
+        subcategories.forEach(sub => {
+          const li = document.createElement('li');
+          const a = document.createElement('a');
+          a.href = `/products/${category}/${sub.value}`;
+          a.textContent = sub.label;
+          a.className = 'fw-bold';
+          a.style.color = '#9b2c9b'; // reddish-purple
+          li.appendChild(a);
+          list.appendChild(li);
+        });
+      }
+
+      col.appendChild(heading);
+      col.appendChild(list);
+      container.appendChild(col);
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('categoryModal');
+    const shopLink = document.getElementById('shopLink');
+
+    shopLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      renderCategoryModal();
+      modal.style.display = modal.style.display === 'block' ? 'none' : 'block';
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!modal.contains(e.target) && !shopLink.contains(e.target)) {
+        modal.style.display = 'none';
+      }
+    });
+  });
+</script>

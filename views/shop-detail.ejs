@@ -1,0 +1,123 @@
+ <style>
+/* General Styles */
+.card img {
+  object-fit: contain;
+}
+
+.card-title {
+  font-size: 1rem; /* Default size */
+  margin-bottom: 0.25rem;
+}
+
+.card-text {
+  font-size: 1rem; /* Default size */
+  color: #2D7B30;
+}
+
+.card button {
+  font-size: 0.85rem; /* Default size */
+  padding: 0.4rem 0.75rem;
+}
+
+/* Mobile-Specific Styles */
+@media (max-width: 768px) {
+  .card img {
+    max-height: 60px; /* Smaller image size for mobile */
+  }
+
+  .card-title {
+    font-size: 0.85rem; /* Smaller text size for mobile */
+  }
+
+  .card-text {
+    font-size: 0.85rem; /* Smaller text size for mobile */
+  }
+
+  .card button {
+    font-size: 0.75rem; /* Smaller button text size for mobile */
+    padding: 0.25rem 0.5rem; /* Smaller button padding for mobile */
+  }
+}
+</style>
+ !-- Display success message -->
+<% if (success_msg.length > 0) { %>
+    <div class="alert alert-success">
+        <%= success_msg %>
+    </div>
+<% } %>
+
+<!-- Display error message -->
+<% if (error_msg.length > 0) { %>
+    <div class="alert alert-danger">
+        <%= error_msg %>
+    </div>
+<% } %>
+
+ 
+
+
+        <!-- Single Product Start -->
+        <div class="container-fluid py-5 mt-5">
+            <div class="container py-5">
+                <div class="row g-4 mb-5">
+                    <div class="col-lg-8 col-xl-9">
+                        <div class="row g-4">
+                            <div class="col-lg-6">
+                                <div class="border rounded">
+                                    <a href="#">
+                                        <img src="<%=product.imageUrl%>" class="img-fluid rounded" alt="Image">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <h4 class="fw-bold mb-3"><%=product.name%></h4>
+                                <p class="mb-3">Category: <%=product.category%></p>
+                                
+                                <div class="d-flex mb-4">
+                                    <i class="fa fa-star text-secondary"></i>
+                                    <i class="fa fa-star text-secondary"></i>
+                                    <i class="fa fa-star text-secondary"></i>
+                                    <i class="fa fa-star text-secondary"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                                
+                                <p class="mb-4"><%=product.description%></p>
+                                
+<form action="/cart/<%= product._id %>" method="post">
+    <input type="hidden" name="name" value="<%= product.name %>">
+    <input type="hidden" name="imageUrl" value="<%= product.imageUrl %>">
+    <input type="hidden" name="price" value="<%= product.price %>">
+    
+</form>
+                           
+</div>
+<!-- Measurement Section Start -->
+<div class="container-fluid py-5">
+  <h4 class="mb-4" style="color: #2D7B30;">
+    Buying Options
+  </h4>
+  <div class="row row-cols-2 row-cols-md-4 g-4">
+    <% measurements.forEach(function(measurement) { %>
+      <div class="col">
+        <div class="card shadow-sm h-100">
+          <div class="d-flex align-items-center">
+            <div class="p-2" style="flex: 1;">
+              <img src="<%= measurement.imageUrl %>" class="img-fluid rounded-start" alt="<%= measurement.name %>">
+            </div>
+            <div class="p-2" style="flex: 2;">
+              <h6 class="card-title mb-1"><%= measurement.name %></h6>
+              <p class="card-text fw-bold mb-2" style="color: #2D7B30;">₦<%= measurement.price %></p>
+              <form action="/cart/<%= product._id %>/add-measurement" method="post">
+                <input type="hidden" name="id" value="<%= measurement._id %>">
+                <input type="hidden" name="name" value="<%= measurement.name %>">
+                <input type="hidden" name="price" value="<%= measurement.price %>">
+                <input type="hidden" name="imageUrl" value="<%= measurement.imageUrl %>">
+                <button type="submit" class="btn btn-primary rounded-pill px-3 py-1">Add to Cart</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% }); %>
+  </div>
+</div>

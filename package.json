@@ -1,0 +1,50 @@
+{
+  "name": "pantryhubserver",
+  "version": "1.0.0",
+  "description": "express server for pantryhub app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "axios": "^1.7.7",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^2.2.0",
+    "connect-flash": "^0.1.1",
+    "connect-mongo": "^5.1.0",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "dotenv": "^16.6.1",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "express-ejs-layouts": "^2.5.1",
+    "express-session": "^1.18.0",
+    "express-validator": "^6.15.0",
+    "jsonwebtoken": "^9.0.2",
+    "method-override": "^3.0.0",
+    "mongoose": "^7.8.7",
+    "multer": "^2.0.2",
+    "nodemailer": "^6.9.16",
+    "uuid": "^11.0.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/johnmayor723/Pantry-hub-server.git"
+  },
+  "keywords": [
+    "food",
+    "delivery",
+    "app",
+    "grocery",
+    "shopping",
+    "online",
+    "ecommerce"
+  ],
+  "author": "Maycode",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/johnmayor723/Pantry-hub-server/issues"
+  },
+  "homepage": "https://github.com/johnmayor723/Pantry-hub-server#readme"
+}

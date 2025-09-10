@@ -1,0 +1,39 @@
+<div class="container-fluid">
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Mfbyforesythe Dashboard</a>
+  </nav>
+
+  <!-- Jumbotron -->
+  <div class="jumbotron mt-4">
+    <h1 class="display-5">Manage Products</h1>
+    <p class="lead">Edit or remove products from the catalog.</p>
+    <a href="/management/products/new" class="btn btn-primary">Create Product</a> 
+  </div>
+
+  <!-- Products Grid -->
+  <div class="container">
+    <div class="row">
+      <% products.forEach(product => { %>
+        <div class="col-md-6 col-lg-3 mb-4">
+          <div class="card text-center shadow-sm">
+            <img src="<%= product.images[0]%>" class="card-img-top" alt="<%= product.name %>">
+            <div class="card-body">
+              <h5 class="card-title"><%= product.name %></h5>
+              <p class="card-text">$<%= product.price %></p>
+              
+
+
+<!-- Delete Form -->
+<form action="/management/products/<%= product._id %>/delete" method="POST">
+    <input type="hidden" name="product_id" value="<%= product._id %>">
+    <input type="hidden" name="_method" value="DELETE"> <!-- Method override -->
+    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+</form>
+            </div>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,253 @@
+<!-- Offcanvas Menu Begin --><div class="offcanvas-menu-overlay"></div>
+<div class="offcanvas-menu-wrapper">
+  <div class="offcanvas__option">
+    <div class="offcanvas__links">
+      <% if (!session.currentUser) { %>
+        <a href="/register">Sign up</a>
+        <a href="/login">Sign in</a>
+      <% } else { %>
+        <a href="/logout">Log out</a>
+      <% } %>
+    </div>
+    <div class="offcanvas__top__hover">
+      <span>GBP<i class="arrow_carrot-down"></i></span>
+      <ul>
+        <li>GBP</li>
+        <li>EUR</li>
+        <li>USD</li>
+      </ul>
+    </div>
+  </div>
+  <div class="offcanvas__nav__option">
+    <a href="#" class="search-switch"><img src="/img/icon/search.png" alt=""></a>
+    <a href="#"><img src="/img/icon/heart.png" alt=""></a>
+    <a href="/cart"><img src="/img/icon/cart.png" alt=""> <span>0</span></a>
+    <div class="price"><%= session.cart ? session.cart.totalQty : 0 %></div>
+  </div>
+  <div id="mobile-categories">
+    <ul class="list-unstyled">
+      <li class="mobile-cat" data-category="Bags">Bags</li>
+      <li class="mobile-cat" data-category="Jackets">Jackets</li>
+      <li class="mobile-cat" data-category="Shirts">Shirts</li>
+      <li class="mobile-cat" data-category="Suits">Suits</li>
+      <li class="mobile-cat" data-category="Dresses">Dresses</li>
+      <li class="mobile-cat" data-category="Skirts">Skirts</li>
+      <li class="mobile-cat" data-category="Sets">Sets</li>
+      <li class="mobile-cat" data-category="Kimono">Kimono</li>
+      <li class="mobile-cat" data-category="Sweatshirts">Sweatshirts</li>
+      <li class="mobile-cat" data-category="Hoodies">Hoodies</li>
+      <li class="mobile-cat" data-category="Glasses">Glasses</li>
+      <li class="mobile-cat" data-category="Beach hats">Beach hats</li>
+      <li class="mobile-cat" data-category="Gym">Gym</li>
+      <li class="mobile-cat" data-category="Sales">Sales</li>
+      <li class="mobile-cat" data-category="Clearance sales">Clearance sales</li>
+    </ul>
+  </div>
+  <div id="mobile-subcategories" style="display:none;">
+    <button id="backToCats" class="btn btn-sm btn-link">&larr; Back</button>
+    <ul id="mobileSubList" class="list-unstyled"></ul>
+  </div>
+</div>
+<!-- Offcanvas Menu End --><!-- Header Section Begin --><header class="header">
+  <div class="header__top">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 col-md-7">
+          <div class="header__top__left"></div>
+        </div>
+        <div class="col-lg-6 col-md-5">
+          <div class="header__top__right">
+            <div class="header__top__links">
+              <% if (!session.currentUser) { %>
+                <a href="/login">Sign in</a>
+                <a href="/register">Sign up</a>
+              <% } else { %>
+                <a href="/logout">Log out</a>
+              <% } %>
+            </div>
+            <div class="header__top__hover">
+              <span>GBP<i class="arrow_carrot-down"></i></span>
+              <ul>
+                <li>GBP</li>
+                <li>EUR</li>
+                <li>USD</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3 col-md-3">
+        <div class="header__logo">
+          <a href="/"><img height="60px" src="/img/mflogo.jpg" alt=""></a>
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-6">
+        <nav class="header__menu mobile-menu">
+          <ul>
+            <li class="active"><a href="/">Home</a></li>
+            <li><a href="/about">About us</a></li>
+<li><a href="#" id="desktopShopLink">Shop</a></li>
+            <li class="nav-category" data-category="Bags"><a href="#">Bags</a></li>
+            <li class="nav-category" data-category="Jackets"><a href="#">Jackets</a></li>
+            <li class="nav-category" data-category="Shirts"><a href="#">Shirts</a></li>
+            <li class="nav-category" data-category="Suits"><a href="#">Suits</a></li>
+            <li class="nav-category" data-category="Dresses"><a href="/products/Dresses/">Dresses</a></li>
+            <li class="nav-category" data-category="Skirts"><a href="/products/Skirts/">Skirts</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="col-lg-3 col-md-3">
+        <div class="header__nav__option">
+          <a href="#" class="search-switch"><img src="img/icon/search.png" alt=""></a>
+          <a href="#"><img src="img/icon/heart.png" alt=""></a>
+          <a href="/cart"><img src="img/icon/cart.png" alt=""> <span>0</span></a>
+          <div class="price"><%= session.cart ? session.cart.totalQty : 0 %></div>
+        </div>
+      </div>
+    </div>
+    <div class="canvas__open"><i class="fa fa-bars"></i></div>
+  </div>
+</header>
+<!-- Header Section End -->
+
+<!-- Desktop Category Modal -->
+<div id="desktopCategoryModal" class="position-fixed w-100 bg-white shadow-lg" style="top:100px; display:none; z-index:1050;">
+  <div class="container py-4">
+    <div class="row row-cols-1 row-cols-md-3 g-4" id="desktopModalContent">
+      <!-- Filled dynamically -->
+    </div>
+  </div>
+</div>
+
+
+  <script>
+  const categoryMap = {
+    Bags: ["crossbody-bag", "shoulder-bag", "clutch", "backpack", "duffel-bag", "travel-set"],
+    Jackets: ["blazer", "denim-jacket", "winter-jacket", "bomber-jacket"],
+    Shirts: ["t-shirt", "long-sleeve-shirts", "short-sleeve-shirts"],
+    Suits: ["trouser-suit", "skirt-suit"],
+    Dresses: [],
+    Skirts: [],
+    Sets: ["travel-set", "beach-set", "short-and-top-set", "kimono-set"],
+    Kimono: [],
+    Sweatshirts: [],
+    Hoodies: [],
+    Glasses: [],
+    "Beach hats": [],
+    Gym: ["active-wears", "yoga-mats"],
+    Sales: [],
+    "Clearance sales": []
+  };
+
+  function capitalize(str) {
+    return str.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+  }
+
+  function renderDesktopModal() {
+    const container = document.getElementById('desktopModalContent');
+    container.innerHTML = '';
+
+    Object.entries(categoryMap).forEach(([category, subcats]) => {
+      const col = document.createElement('div');
+      col.className = 'col';
+
+      const title = document.createElement('h6');
+      title.textContent = category;
+
+      const list = document.createElement('ul');
+      list.className = 'list-unstyled';
+
+      if (subcats.length === 0) {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = `/products/${category}/`;
+        a.textContent = category;
+        a.className = 'fw-bold';
+        li.appendChild(a);
+        list.appendChild(li);
+      } else {
+        subcats.forEach(sub => {
+          const li = document.createElement('li');
+          const a = document.createElement('a');
+          a.href = `/products/${category}/${sub}`;
+          a.textContent = capitalize(sub);
+          a.className = 'fw-bold';
+          li.appendChild(a);
+          list.appendChild(li);
+        });
+      }
+
+      col.appendChild(title);
+      col.appendChild(list);
+      container.appendChild(col);
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const shopLink = document.getElementById('desktopShopLink');
+    const modal = document.getElementById('desktopCategoryModal');
+
+    shopLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (window.innerWidth >= 992) {
+        renderDesktopModal();
+        modal.style.display = modal.style.display === 'block' ? 'none' : 'block';
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!modal.contains(e.target) && !shopLink.contains(e.target)) {
+        modal.style.display = 'none';
+      }
+    });
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const mobileCats = document.querySelectorAll('.mobile-cat');
+    const mobileCatList = document.getElementById('mobileSubList');
+    const mobileCatsContainer = document.getElementById('mobile-categories');
+    const mobileSubcatsContainer = document.getElementById('mobile-subcategories');
+    const backToCats = document.getElementById('backToCats');
+
+    mobileCats.forEach(el => {
+      el.addEventListener('click', () => {
+        const cat = el.getAttribute('data-category');
+        const subs = categoryMap[cat] || [];
+
+        mobileCatList.innerHTML = '';
+        if (subs.length === 0) {
+          const li = document.createElement('li');
+          const a = document.createElement('a');
+          a.href = `/products/${cat}/`;
+          a.textContent = cat;
+          a.className = 'fw-bold';
+          li.appendChild(a);
+          mobileCatList.appendChild(li);
+        } else {
+          subs.forEach(sub => {
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.href = `/products/${cat}/${sub}`;
+            a.textContent = capitalize(sub);
+            a.className = 'fw-bold';
+            li.appendChild(a);
+            mobileCatList.appendChild(li);
+          });
+        }
+
+        mobileCatsContainer.style.display = 'none';
+        mobileSubcatsContainer.style.display = 'block';
+      });
+    });
+
+    backToCats.addEventListener('click', () => {
+      mobileSubcatsContainer.style.display = 'none';
+      mobileCatsContainer.style.display = 'block';
+    });
+  });
+</script>

@@ -1,0 +1,271 @@
+ <script src="https://js.stripe.com/v3/"></script>
+
+<style>
+
+/* Quantity Controls */
+    .quantity {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .quantity input {
+        width: 40px;
+        height: 30px;
+        text-align: center;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+    }
+
+    .qty-btn, .cart__close, .clear-cart-btn {
+        background: #ff6600;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        border-radius: 4px;
+        font-size: 16px;
+    }
+
+    .qty-btn:hover, .cart__close:hover, .clear-cart-btn:hover {
+        background: #cc5200;
+    }
+
+    .cart__close {
+        background: red;
+    }
+
+    .cart__close i {
+        font-size: 18px;
+    }
+
+    /* Clear Cart Button */
+    .clear-cart-btn {
+        display: block;
+        margin: 20px auto;
+        font-size: 18px;
+    }
+    /* Style the Stripe card element */
+.StripeElement {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: white;
+  transition: border-color 0.3s ease-in-out;
+}
+
+/* Placeholder styling */
+.StripeElement::placeholder {
+  color: #aab7c4;
+}
+
+/* When focused */
+.StripeElement--focus {
+  border-color: #28a745;
+  box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
+}
+
+/* When invalid */
+.StripeElement--invalid {
+  border-color: #fa755a;
+  box-shadow: 0 0 5px rgba(250, 117, 90, 0.5);
+}
+
+/* When webkit autofill is applied */
+.StripeElement:-webkit-autofill {
+  background-color: #fefde5 !important;
+}
+</style>
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__text">
+                        <h4>Shopping Cart</h4>
+                        <div class="breadcrumb__links">
+                            <a href="/">Home</a>
+                            <a href="/">Shop</a>
+                            <span>Shopping Cart</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+    <% if (session.cart && session.cart.totalQty > 0) { %>
+
+    <!-- Shopping Cart Section Begin -->
+    <section class="shopping-cart spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="shopping__cart__table">
+               <table>
+    <thead>
+        <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Total</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% cart.items.forEach(item => { %>
+        <tr>
+            <!-- Product Details -->
+            <td class="product__cart__item">
+                <div class="product__cart__item__pic">
+                    <img src="<%= item.imageUrl %>" alt="">
+                </div>
+                <div class="product__cart__item__text">
+                    <h6><%= item.name %></h6>
+                    <h5>$<%= item.price %></h5>
+                </div>
+            </td>
+
+            <!-- Quantity Update -->
+            <td class="quantity__item">
+                <div class="quantity">
+                    <!-- Decrease Quantity Form -->
+                    <form action="/cart/reduce/<%= item.id %>" method="post" style="display: inline;">
+                        <button type="submit" class="qty-btn">-</button>
+                    </form>
+
+                    <!-- Display Quantity -->
+                    <input type="text" value="<%= item.quantity %>" readonly>
+
+                    <!-- Increase Quantity Form -->
+                    <form action="/cart/increase/<%= item.id %>" method="post" style="display: inline;">
+                        <button type="submit" class="qty-btn">+</button>
+                    </form>
+                </div>
+            </td>
+
+            <!-- Total Price -->
+            <td class="cart__price">$ <%= item.price * item.quantity %></td>
+
+            <!-- Remove Item -->
+            <td class="cart__actions">
+                <form action="/cart/remove/<%= item.id %>" method="post">
+                    <button type="submit" class="cart__close">
+                        <i class="fa fa-close"></i>
+                    </button>
+                </form>
+            </td>
+        </tr>
+        <% }); %>
+    </tbody>
+</table>
+
+<!-- Clear Cart Button -->
+<form action="/cart/clearCart" method="post">
+    <button type="submit" class="clear-cart-btn">Clear Cart</button>
+</form>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="continue__btn">
+                                <a href="/">Continue Shopping</a>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="continue__btn update__btn">
+                                <a href="#"><i class="fa fa-spinner"></i> Update cart</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="cart__discount">
+                        <h6>Check Out</h6>
+                        <form class="checkout-form" action="/payments/charge" method="post">
+                            <input type="text" name="name" placeholder="Enter name">
+<input type="text" name="address" placeholder="Enter address">
+<input type="text" name="phone" placeholder="Enter phone number">
+<input type="text" name="email" placeholder="Enter email">
+
+
+            <input type="hidden" name="totalAmount" value="<%= session.cart.totalPrice %>">
+            <input type="hidden" name="totalQty" value="<%= cart.totalAmount %>">
+            
+                     <div id="card-element">
+                            <!-- A Stripe Element will be inserted here. -->
+                         </div>         
+            
+                    </div>
+                    <div class="cart__total">
+                        <h6>Cart total</h6>
+                        <ul>
+                            <li>Subtotal <span>£ <%=session.cart.totalAmount %></span></li>
+                            <li>Total <span>£ <%=session.cart.totalAmount%> </span></li>
+                        </ul>
+                        <div id="card-element">
+                            <!-- A Stripe Element will be inserted here. -->
+                         </div>
+                        <button class="primary-btn">Proceed to checkout</button>
+                       </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+            <% } else { %>
+        <p>Your cart is empty.</p>
+        <% } %>
+ <script>
+ /*let PK = "pk_live_51QuCnW2Ll8ZPNKoHlbjTNCxmZz5xwmHWma2G9MLVLQePpnIbMsXuYDO7OPnx7csrQdmnbVrW1MAV8iehfoLzrVm800hlI5hBb5";*/
+  let PK = "pk_live_51JJP3QC3AvHrSrpnLqz1xwWCTRjvfVXUQ44mJHFk2PKTZWos5YGQYNKA1czYIYNcRTDlYyw5JdtYdxv23MfB4Pxl00XljiqdpR"
+  const stripe = Stripe(PK);
+  const elements = stripe.elements();
+
+  // Custom styling
+  const style = {
+    base: {
+      fontSize: '16px',
+      color: '#32325d',
+      fontFamily: 'Arial, sans-serif',
+      '::placeholder': {
+        color: '#aab7c4'
+      }
+    },
+    invalid: {
+      color: '#fa755a',
+      iconColor: '#fa755a'
+    }
+  };
+
+  const cardElement = elements.create('card', { style });
+  cardElement.mount('#card-element');
+
+  const form = document.querySelector('.checkout-form');
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const { token, error } = await stripe.createToken(cardElement);
+
+    if (error) {
+      document.getElementById('card-errors').textContent = error.message;
+    } else {
+      const hiddenInput = document.createElement('input');
+      hiddenInput.setAttribute('type', 'hidden');
+      hiddenInput.setAttribute('name', 'token');
+      hiddenInput.setAttribute('value', token.id);
+
+      form.appendChild(hiddenInput);
+      form.submit();
+    }
+  });
+</script>       
+        
+
