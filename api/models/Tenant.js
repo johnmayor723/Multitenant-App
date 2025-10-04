@@ -6,8 +6,8 @@ const { Schema } = mongoose;
 const TenantSchema = new Schema({
   tenantId: {
     type: String,
-    unique: true,
-    default: uuidv4, // auto-generate unique ID
+    unique: true, // still enforce uniqueness
+    required: true,
   },
   name: {
     type: String,

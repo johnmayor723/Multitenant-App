@@ -26,6 +26,15 @@ const BLOG_URL = 'http://localhost:3060/api/blogs';
 router.get("/", (req, res) => {
   res.render("multitenant/index", { layout: false });
 });
+router.get("/dashboard", (req, res) => {
+  res.render("multitenant/dashboard", { layout: false });
+});
+router.get("/signup", (req, res) => {
+  res.render("multitenant/signup", { layout: false });
+});
+router.get("/login", (req, res) => {
+  res.render("multitenant/login", { layout: false });
+});
 router.get("/store", async (req, res) => {
   try {
     // Fetch products and blogs concurrently

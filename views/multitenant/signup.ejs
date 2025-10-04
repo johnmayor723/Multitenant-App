@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>EasyApps || Sign-up</title>
+  <link rel="icon" type="image/png" href="/multitenant/img/easyicon.png">
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    :root{
+      --left-bg: #e9ecef; /* left column background (grey) */
+      --right-bg: #ffffff; /* right column background (white) */
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+
+    /* make the row fill viewport and remove gaps between columns */
+    .row-full {
+      min-height: 100vh;
+    }
+
+    /* remove bootstrap gutters so colors meet exactly */
+    .g-0 { --bs-gutter-x: 0; --bs-gutter-y: 0; }
+
+    /* column backgrounds */
+    .col-left {
+      background: var(--left-bg);
+    }
+    .col-right {
+      background: var(--right-bg);
+    }
+
+    /* center the content vertically + horizontally */
+    .col-left, .col-right {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem; /* outer padding for breathing room */
+    }
+
+    /* signup card styling */
+    .signup-box {
+      width: 100%;
+      max-width: 420px;
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 28px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+      text-align: center;
+    }
+    .signup-logo { font-size: 1.6rem; font-weight: 700; margin-bottom: 1.25rem; }
+
+    /* space between heading and the form (desktop) */
+    .signup-heading {
+      margin-bottom: 100px; /* ~100px spacing requested */
+    }
+
+    .btn-signup { margin-bottom: 12px; width: 100%; height: 44px; border-radius: 8px; font-weight: 600; }
+    .btn-apple { background:#000; color:#fff; border: none; }
+    .btn-google { background: #fff; border: 1px solid #cfcfcf; color: #222; }
+
+    .form-email {
+      margin-bottom: 18px;
+    }
+
+    /* image sizing — keep it centered and contained */
+    .signup-image {
+      max-width: 100%;
+      max-height: 85vh;
+      object-fit: contain;
+      display: block;
+    }
+
+    /* mobile adjustments */
+    @media (max-width: 767.98px) {
+      .col-left { padding: 1rem; height: 100%; background-color: #fff; }
+      .signup-box { padding: 16px; margin-top: 8px; margin-bottom: 8px; box-shadow: none; }
+      .signup-logo { font-size: 1.25rem; margin-bottom: 0.75rem; }
+      .signup-heading { margin-bottom: 20px; } /* reduce spacing on mobile */
+      .signup-image { max-height: 50vh; }
+      .col-right { display: none;  /* hide image column on mobile */}
+
+    }
+
+    /* small tweaks for input/button visuals */
+    .input-group .form-control {
+      height: 44px;
+      border-radius: 8px 0 0 8px;
+    }
+    .input-group .btn {
+      height: 44px;
+      border-radius: 0 8px 8px 0;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- row with no gutters and viewport height -->
+  <div class="row g-0 row-full">
+    <!-- RIGHT: image area (white) -->
+    <div  class="col-12 col-md-6 col-right">
+      <!-- Use your local image path or a placeholder if not available -->
+      <img class="signup-image" height="50px" src="/multitenant/img/easylogo.png" alt="Signup illustration" onerror="this.onerror=null;this.src='https://via.placeholder.com/800x600?text=Signup+Image'">
+    </div>
+
+    <!-- LEFT: form area (grey) -->
+    <div class="col-12 col-md-6 col-left">
+      <div class="signup-box" aria-labelledby="signup-heading">
+
+        <!-- Heading / Logo -->
+    <div  class="mobile-header d-md-none mb-3">
+        <!-- Display success message -->
+    <!-- Success Message -->
+<% if (typeof success_msg !== "undefined" && success_msg && success_msg.length > 0) { %>
+  <div class="alert alert-success">
+    <%= success_msg %>
+  </div>
+<% } %>
+
+<!-- Error Message -->
+<% if (typeof error_msg !== "undefined" && error_msg && error_msg.length > 0) { %>
+  <div class="alert alert-danger">
+    <%= error_msg %>
+  </div>
+<% } %>
+
+      <!-- Use your local image path or a placeholder if not available -->
+      <img class="signup-image" height="40px" src="/multitenant/img/easylogo.png" alt="Signup illustration" onerror="this.onerror=null;this.src='https://via.placeholder.com/800x600?text=Signup+Image'">
+    </div>
+        <div style="margin-top: 80px;" id="signup-heading" class="signup-logo signup-heading">
+          🚀 Create An Account For Free
+        </div>
+
+        <!-- Email signup form (posts to /multitenant/email-signup) -->
+        <form class="form-email" action="/multitenant/request-otp" method="POST" novalidate>
+          <div class="input-group mb-2">
+            <input
+              type="email"
+              name="email"
+              class="form-control"
+              placeholder="Enter your email"
+              aria-label="Email address"
+              required
+            />
+            <button class="btn btn-dark" type="submit">Continue with Email</button>
+          </div>
+          <!-- Optional small helper text -->
+          <div class="text-muted small mb-3">We’ll send a confirmation link to this email.</div>
+        </form>
+
+        <!-- Social / alternative signups -->
+        <button class="btn btn-google btn-signup" type="button">🔵 Continue with Google</button>
+        <button class="btn btn-apple btn-signup" type="button"> Continue with iPhone</button>
+
+        <div style="margin-top:12px; font-size:0.95rem;">
+          Already have an account? <a href="/login" class="fw-semibold">Sign in</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS (optional) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

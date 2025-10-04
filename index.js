@@ -20,12 +20,16 @@ const blogRoutes = require('./api/routes/blogRoute');
 const commentRoutes = require('./api/routes/commentRoute');
 const tenantAuthRoutes = require("./api/routes/tenantAuthRoute");
 
+
 // Client-side routes
 const clientIndexRouter = require("./routes/index");
 const clientCartRouter = require("./routes/cart");
 const clientPaymentRouter = require("./routes/payment");
 const clientOrderRouter = require("./routes/Order");
 const clientManagementRouter = require("./routes/management");
+const clientmultitenantRouter = require("./routes/multitenant");
+
+app.use("/multitenant", clientmultitenantRouter);
 
 // DB connection
 const connectDB = require("./api/config/database");
@@ -48,7 +52,10 @@ app.set('layout', 'layout');
 
 // Middleware
 app.use(cors());
-app.use(express.json());
+app.use(express.json());  // for parsing JSON
+app.use(express.urlencoded({ extended: true })); // for parsing form data
+
+//app.use(express.json());
 app.use(methodOverride('_method'));
 
 // Static files
@@ -104,7 +111,8 @@ app.use("/api/tenant-auth", tenantAuthRoutes);
 app.use("/api/auth", authRoutes);
 
 // Client routes
-app.use("/", clientIndexRouter);
+app.use("/", clientmultitenantRouter);
+app.use("/index", clientIndexRouter);
 app.use("/cart", clientCartRouter);
 app.use("/payment", clientPaymentRouter);
 app.use("/orders", clientOrderRouter);

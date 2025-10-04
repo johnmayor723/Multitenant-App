@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { tenantLogin } = require("../api/controllers/tenantAuthController");
 
 const orderSchema = new mongoose.Schema({
   cart: {
@@ -7,6 +8,11 @@ const orderSchema = new mongoose.Schema({
   },
   email: {
     type: String,
+    required: true,
+  },
+  tenantId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Tenant",
     required: true,
   },
   address: {
