@@ -26,6 +26,21 @@ const BLOG_URL = 'http://localhost:3060/api/blogs';
 router.get("/", (req, res) => {
   res.render("multitenant/index", { layout: false });
 });
+router.get("/adbeaconhope", (req, res) => {
+  res.render("multitenant/adbeconhope-signin", { layout: false });
+});
+router.post("/apps/adbeconhope/dashboard", (req, res) => {
+  const { email, password } = req.body;
+
+  // Simple hardcoded authentication (replace with real logic)
+  if (email === "adedoyinbeaconofhopefoundation" && password === "Hope2025") {
+    // Redirect to admin page
+    return res.redirect("https://adedoyinbeaconofhopefoundation.com/management");
+  } else {
+    // If login fails
+    res.render("multitenant/adbeconhope-signin", { layout: false });
+  }
+});
 router.get("/dashboard", (req, res) => {
   res.render("multitenant/dashboard", { layout: false });
 });

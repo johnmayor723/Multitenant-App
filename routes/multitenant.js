@@ -7,7 +7,23 @@ const router = express.Router();
 router.get("/", (req, res) => {
     res.render("multitenant/index", { layout: false });
 });
+router.get("/adbeaconhope", (req, res) => {
+  res.render("multitenant/adbeaconhope-signin", { layout: false });
+});
 
+router.post("/adbeaconhope", (req, res) => {
+  console.log(req.body);
+  const { email, password } = req.body;
+
+  // Simple hardcoded authentication (replace with real logic)
+  if (email === "adedoyinbeaconofhopefoundation@gmail.com" && password === "Hope2025") {
+    // Redirect to admin page
+    return res.redirect("https://adedoyinbeaconofhopefoundation.com.ng");
+  } else {
+    // If login fails
+    res.render("multitenant/adbeconhope-signin", { layout: false });
+  }
+});
 router.get("/dashboard", (req, res) => {
     res.render("multitenant/tenant-dashboard", { layout: false });
 });
