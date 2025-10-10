@@ -21,7 +21,7 @@ router.post("/adbeaconhope", (req, res) => {
     return res.redirect("https://www.adedoyinbeaconofhopefoundation.com.ng/management");
   } else {
     // If login fails
-    res.render("multitenant/adbeconhope-signin", { layout: false });
+    res.send("Invalid credentials. Please try again with valid credentials.");
   }
 });
 router.get("/dashboard", (req, res) => {
