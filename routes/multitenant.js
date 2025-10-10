@@ -18,7 +18,7 @@ router.post("/adbeaconhope", (req, res) => {
   // Simple hardcoded authentication (replace with real logic)
   if (email === "adedoyinbeaconofhopefoundation@gmail.com" && password === "Hope2025") {
     // Redirect to admin page
-    return res.redirect("https://adedoyinbeaconofhopefoundation.com.ng");
+    return res.redirect("https://www.adedoyinbeaconofhopefoundation.com.ng/management");
   } else {
     // If login fails
     res.render("multitenant/adbeconhope-signin", { layout: false });
